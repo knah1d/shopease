@@ -1,4 +1,4 @@
-package com.ecommerce.application.dtos;
+package com.example.shopease.application.dtos;
 
 import lombok.Data;
 

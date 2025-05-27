@@ -1,8 +1,10 @@
-package com.ecommerce.application.services;
+package com.example.shopease.application.services;
 
-import com.ecommerce.domain.models.User;
-import com.ecommerce.domain.repositories.UserRepository;
-import com.ecommerce.domain.usecases.UserInteractor;
+
+import com.example.shopease.application.dtos.UserRequest;
+import com.example.shopease.domain.models.User;
+import com.example.shopease.domain.repositories.UserRepository;
+import com.example.shopease.domain.usecases.UserInteractor;
 import org.springframework.stereotype.Service;
 
 @Service

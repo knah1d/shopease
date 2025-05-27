@@ -1,4 +1,4 @@
-package com.ecommerce.domain.models;
+package com.example.shopease.domain.models;
 
 import lombok.Data;
 

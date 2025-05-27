@@ -1,6 +1,6 @@
-package com.ecommerce.domain.repositories;
+package com.example.shopease.domain.repositories;
 
-import com.ecommerce.domain.models.User;
+import com.example.shopease.domain.models.User;
 
 public interface UserRepository {
     User save(User user);

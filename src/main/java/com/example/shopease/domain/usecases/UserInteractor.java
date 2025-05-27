@@ -1,7 +1,7 @@
-package com.ecommerce.domain.usecases;
+package com.example.shopease.domain.usecases;
 
-import com.ecommerce.domain.models.User;
-import com.ecommerce.domain.repositories.UserRepository;
+import com.example.shopease.domain.models.User;
+import com.example.shopease.domain.repositories.UserRepository;
 
 public class UserInteractor {
     private final UserRepository userRepository;
