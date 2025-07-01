@@ -1,0 +1,341 @@
+E-Commerce MVP Features (Simplified Clean Architecture)
+
+1. User Management
+* Purpose: Basic user authentication and profile management.
+* MVP Features:
+   * Register: Create user account with email, password, name, and role (CUSTOMER/SELLER).
+   * Login: Authenticate user and return JWT token.
+   * Get Profile: Retrieve basic user information.
+
+2. Product Catalog
+* Purpose: Basic product management for sellers.
+* MVP Features:
+   * Add Product: Seller creates product with name, description, price, and stock.
+   * List Products: View all products with basic filtering.
+   * Get Product: View single product details.
+   * Update Stock: Simple stock quantity updates.
+
+3. Shopping Cart
+* Purpose: Basic cart functionality.
+* MVP Features:
+   * Add to Cart: Add product with quantity to user's cart.
+   * View Cart: Display cart items and total.
+   * Remove Item: Remove product from cart.
+   * Clear Cart: Empty the cart.
+
+4. Order Processing
+* Purpose: Basic order creation and tracking.
+* MVP Features:
+   * Place Order: Convert cart to order with basic validation.
+   * View Orders: List user's orders with status.
+   * Get Order: View order details.
+
+5. Payment (Simplified)
+* Purpose: Mock payment processing for MVP.
+* MVP Features:
+   * Process Payment: Mock payment processing (always succeeds for MVP).
+   * Payment Status: Simple status tracking (PENDING, COMPLETED, FAILED).
+
+6. Basic Notifications (Optional for MVP)
+* Purpose: Simple email notifications.
+* MVP Features:
+   * Order Confirmation: Email when order is placed.
+   * Simple Templates: Basic email templates.
+
+========================================================================
+SIMPLIFIED CLEAN ARCHITECTURE FOR MVP
+========================================================================
+
+ecommerce-mvp/
+├── src/
+│   └── main/
+│       ├── java/
+│       │   └── com/example/ecommerce/
+│       │       ├── user/
+│       │       │   ├── domain/
+│       │       │   │   ├── entities/
+│       │       │   │   │   └── User.java
+│       │       │   │   ├── valueobjects/
+│       │       │   │   │   ├── UserId.java
+│       │       │   │   │   ├── Email.java
+│       │       │   │   │   └── Role.java
+│       │       │   │   ├── exceptions/
+│       │       │   │   │   ├── UserNotFoundException.java
+│       │       │   │   │   └── DuplicateEmailException.java
+│       │       │   │   └── repositories/
+│       │       │   │       └── UserRepository.java
+│       │       │   ├── application/
+│       │       │   │   ├── usecases/
+│       │       │   │   │   ├── RegisterUserUseCase.java
+│       │       │   │   │   ├── LoginUserUseCase.java
+│       │       │   │   │   └── GetUserProfileUseCase.java
+│       │       │   │   └── services/
+│       │       │   │       ├── UserService.java
+│       │       │   │       └── AuthenticationService.java
+│       │       │   ├── infrastructure/
+│       │       │   │   ├── persistence/
+│       │       │   │   │   ├── JpaUserRepository.java
+│       │       │   │   │   └── UserEntity.java
+│       │       │   │   └── security/
+│       │       │   │       ├── JwtTokenProvider.java
+│       │       │   │       └── PasswordEncoder.java
+│       │       │   └── interfaces/
+│       │       │       ├── rest/
+│       │       │       │   └── UserController.java
+│       │       │       ├── dto/
+│       │       │       │   ├── RegisterRequest.java
+│       │       │       │   ├── LoginRequest.java
+│       │       │       │   ├── UserResponse.java
+│       │       │       │   └── LoginResponse.java
+│       │       │       └── mappers/
+│       │       │           └── UserMapper.java
+│       │       │
+│       │       ├── product/
+│       │       │   ├── domain/
+│       │       │   │   ├── entities/
+│       │       │   │   │   └── Product.java
+│       │       │   │   ├── valueobjects/
+│       │       │   │   │   ├── ProductId.java
+│       │       │   │   │   ├── Price.java
+│       │       │   │   │   └── Stock.java
+│       │       │   │   ├── exceptions/
+│       │       │   │   │   ├── ProductNotFoundException.java
+│       │       │   │   │   └── InsufficientStockException.java
+│       │       │   │   └── repositories/
+│       │       │   │       └── ProductRepository.java
+│       │       │   ├── application/
+│       │       │   │   ├── usecases/
+│       │       │   │   │   ├── CreateProductUseCase.java
+│       │       │   │   │   ├── GetProductUseCase.java
+│       │       │   │   │   ├── ListProductsUseCase.java
+│       │       │   │   │   └── UpdateStockUseCase.java
+│       │       │   │   └── services/
+│       │       │   │       └── ProductService.java
+│       │       │   ├── infrastructure/
+│       │       │   │   └── persistence/
+│       │       │   │       ├── JpaProductRepository.java
+│       │       │   │       └── ProductEntity.java
+│       │       │   └── interfaces/
+│       │       │       ├── rest/
+│       │       │       │   └── ProductController.java
+│       │       │       ├── dto/
+│       │       │       │   ├── CreateProductRequest.java
+│       │       │       │   ├── ProductResponse.java
+│       │       │       │   └── UpdateStockRequest.java
+│       │       │       └── mappers/
+│       │       │           └── ProductMapper.java
+│       │       │
+│       │       ├── cart/
+│       │       │   ├── domain/
+│       │       │   │   ├── entities/
+│       │       │   │   │   ├── Cart.java
+│       │       │   │   │   └── CartItem.java
+│       │       │   │   ├── valueobjects/
+│       │       │   │   │   ├── CartId.java
+│       │       │   │   │   └── Quantity.java
+│       │       │   │   ├── exceptions/
+│       │       │   │   │   └── CartNotFoundException.java
+│       │       │   │   └── repositories/
+│       │       │   │       └── CartRepository.java
+│       │       │   ├── application/
+│       │       │   │   ├── usecases/
+│       │       │   │   │   ├── AddToCartUseCase.java
+│       │       │   │   │   ├── RemoveFromCartUseCase.java
+│       │       │   │   │   ├── GetCartUseCase.java
+│       │       │   │   │   └── ClearCartUseCase.java
+│       │       │   │   └── services/
+│       │       │   │       └── CartService.java
+│       │       │   ├── infrastructure/
+│       │       │   │   └── persistence/
+│       │       │   │       ├── JpaCartRepository.java
+│       │       │   │       ├── CartEntity.java
+│       │       │   │       └── CartItemEntity.java
+│       │       │   └── interfaces/
+│       │       │       ├── rest/
+│       │       │       │   └── CartController.java
+│       │       │       ├── dto/
+│       │       │       │   ├── AddToCartRequest.java
+│       │       │       │   ├── CartResponse.java
+│       │       │       │   └── CartItemResponse.java
+│       │       │       └── mappers/
+│       │       │           └── CartMapper.java
+│       │       │
+│       │       ├── order/
+│       │       │   ├── domain/
+│       │       │   │   ├── entities/
+│       │       │   │   │   ├── Order.java
+│       │       │   │   │   └── OrderItem.java
+│       │       │   │   ├── valueobjects/
+│       │       │   │   │   ├── OrderId.java
+│       │       │   │   │   ├── OrderStatus.java
+│       │       │   │   │   └── OrderTotal.java
+│       │       │   │   ├── exceptions/
+│       │       │   │   │   └── OrderNotFoundException.java
+│       │       │   │   └── repositories/
+│       │       │   │       └── OrderRepository.java
+│       │       │   ├── application/
+│       │       │   │   ├── usecases/
+│       │       │   │   │   ├── PlaceOrderUseCase.java
+│       │       │   │   │   ├── GetOrderUseCase.java
+│       │       │   │   │   └── ListOrdersUseCase.java
+│       │       │   │   └── services/
+│       │       │   │       └── OrderService.java
+│       │       │   ├── infrastructure/
+│       │       │   │   └── persistence/
+│       │       │   │       ├── JpaOrderRepository.java
+│       │       │   │       ├── OrderEntity.java
+│       │       │   │       └── OrderItemEntity.java
+│       │       │   └── interfaces/
+│       │       │       ├── rest/
+│       │       │       │   └── OrderController.java
+│       │       │       ├── dto/
+│       │       │       │   ├── PlaceOrderRequest.java
+│       │       │       │   ├── OrderResponse.java
+│       │       │       │   └── OrderItemResponse.java
+│       │       │       └── mappers/
+│       │       │           └── OrderMapper.java
+│       │       │
+│       │       ├── payment/
+│       │       │   ├── domain/
+│       │       │   │   ├── entities/
+│       │       │   │   │   └── Payment.java
+│       │       │   │   ├── valueobjects/
+│       │       │   │   │   ├── PaymentId.java
+│       │       │   │   │   ├── PaymentStatus.java
+│       │       │   │   │   └── Amount.java
+│       │       │   │   ├── exceptions/
+│       │       │   │   │   └── PaymentFailedException.java
+│       │       │   │   └── repositories/
+│       │       │   │       └── PaymentRepository.java
+│       │       │   ├── application/
+│       │       │   │   ├── usecases/
+│       │       │   │   │   ├── ProcessPaymentUseCase.java
+│       │       │   │   │   └── GetPaymentStatusUseCase.java
+│       │       │   │   └── services/
+│       │       │   │       ├── PaymentService.java
+│       │       │   │       └── MockPaymentGateway.java
+│       │       │   ├── infrastructure/
+│       │       │   │   └── persistence/
+│       │       │   │       ├── JpaPaymentRepository.java
+│       │       │   │       └── PaymentEntity.java
+│       │       │   └── interfaces/
+│       │       │       ├── rest/
+│       │       │       │   └── PaymentController.java
+│       │       │       ├── dto/
+│       │       │       │   ├── ProcessPaymentRequest.java
+│       │       │       │   └── PaymentResponse.java
+│       │       │       └── mappers/
+│       │       │           └── PaymentMapper.java
+│       │       │
+│       │       ├── notification/ (OPTIONAL FOR MVP)
+│       │       │   ├── domain/
+│       │       │   │   ├── entities/
+│       │       │   │   │   └── Notification.java
+│       │       │   │   ├── valueobjects/
+│       │       │   │   │   ├── NotificationId.java
+│       │       │   │   │   └── NotificationType.java
+│       │       │   │   └── repositories/
+│       │       │   │       └── NotificationRepository.java
+│       │       │   ├── application/
+│       │       │   │   ├── usecases/
+│       │       │   │   │   └── SendOrderConfirmationUseCase.java
+│       │       │   │   └── services/
+│       │       │   │       └── NotificationService.java
+│       │       │   ├── infrastructure/
+│       │       │   │   ├── persistence/
+│       │       │   │   │   ├── JpaNotificationRepository.java
+│       │       │   │   │   └── NotificationEntity.java
+│       │       │   │   └── email/
+│       │       │   │       └── SimpleEmailSender.java
+│       │       │   └── interfaces/
+│       │       │       ├── dto/
+│       │       │       │   └── NotificationResponse.java
+│       │       │       └── mappers/
+│       │       │           └── NotificationMapper.java
+│       │       │
+│       │       ├── shared/
+│       │       │   ├── domain/
+│       │       │   │   ├── valueobjects/
+│       │       │   │   │   ├── BaseId.java
+│       │       │   │   │   └── Money.java
+│       │       │   │   ├── entities/
+│       │       │   │   │   └── BaseEntity.java
+│       │       │   │   └── exceptions/
+│       │       │   │       ├── DomainException.java
+│       │       │   │       └── BusinessException.java
+│       │       │   ├── application/
+│       │       │   │   └── exceptions/
+│       │       │   │       ├── UseCaseException.java
+│       │       │   │       └── ValidationException.java
+│       │       │   ├── infrastructure/
+│       │       │   │   ├── config/
+│       │       │   │   │   ├── DatabaseConfig.java
+│       │       │   │   │   └── SecurityConfig.java
+│       │       │   │   ├── persistence/
+│       │       │   │   │   └── BaseJpaEntity.java
+│       │       │   │   └── security/
+│       │       │   │       └── SecurityUtils.java
+│       │       │   └── interfaces/
+│       │       │       ├── dto/
+│       │       │       │   ├── ApiResponse.java
+│       │       │       │   └── ErrorResponse.java
+│       │       │       ├── exceptions/
+│       │       │       │   └── GlobalExceptionHandler.java
+│       │       │       └── validation/
+│       │       │           ├── EmailValidator.java
+│       │       │           └── PriceValidator.java
+│       │       │
+│       │       └── EcommerceApplication.java
+│       └── resources/
+│           ├── application.yml
+│           └── db/
+│               └── migration/
+│                   ├── V1__create_users_table.sql
+│                   ├── V2__create_products_table.sql
+│                   ├── V3__create_carts_table.sql
+│                   ├── V4__create_orders_table.sql
+│                   └── V5__create_payments_table.sql
+├── pom.xml
+
+========================================================================
+MVP DESIGN PRINCIPLES FOLLOWED:
+========================================================================
+
+✅ CLEAN ARCHITECTURE COMPLIANCE:
+1. Domain Layer: Pure business logic, no external dependencies
+2. Application Layer: Use cases orchestrate business flows
+3. Infrastructure Layer: External concerns (DB, Security, Email)
+4. Interface Layer: Controllers, DTOs, Mappers
+
+✅ SOLID PRINCIPLES:
+1. Single Responsibility: Each class has one clear purpose
+2. Open/Closed: Can extend without modifying existing code
+3. Liskov Substitution: Proper inheritance hierarchies
+4. Interface Segregation: Small, focused interfaces
+5. Dependency Inversion: Depend on abstractions, not concretions
+
+✅ MVP SIMPLIFICATIONS:
+1. Removed complex event-driven architecture (can add later)
+2. Simplified command/query separation (basic use cases)
+3. Removed advanced patterns (strategies, specifications) initially
+4. Mock payment gateway for MVP
+5. Basic email notifications only
+6. Simple exception handling
+7. Minimal value objects (only essential ones)
+
+✅ MICROSERVICE READY:
+1. Clear module boundaries
+2. Independent data models
+3. Interface-based communication
+4. Can easily extract to separate services
+
+✅ SCALABILITY PATH:
+1. Can add event-driven patterns later
+2. Can implement CQRS when needed
+3. Can add advanced domain patterns
+4. Can migrate to microservices easily
+5. Can add complex business rules incrementally
+
+This MVP design maintains Clean Architecture principles while keeping 
+the implementation simple and focused on core e-commerce functionality.
+Perfect for starting development and iterating quickly.
