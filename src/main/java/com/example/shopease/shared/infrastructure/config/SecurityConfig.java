@@ -23,11 +23,11 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/users/register", "/api/users/login").permitAll()
-                .requestMatchers("/api/products/**").permitAll() // For MVP, allow all product access
-                .requestMatchers("/api/cart/**").permitAll() // For MVP, allow all cart access  
-                .requestMatchers("/api/orders/**").permitAll() // For MVP, allow all order access
-                .requestMatchers("/api/payments/**").permitAll() // For MVP, allow all payment access
+                .antMatchers("/api/users/register", "/api/users/login").permitAll()
+                .antMatchers("/api/products/**").permitAll() // For MVP, allow all product access
+                .antMatchers("/api/cart/**").permitAll() // For MVP, allow all cart access  
+                .antMatchers("/api/orders/**").permitAll() // For MVP, allow all order access
+                .antMatchers("/api/payments/**").permitAll() // For MVP, allow all payment access
                 .anyRequest().permitAll() // For MVP, allow all requests
             );
 
