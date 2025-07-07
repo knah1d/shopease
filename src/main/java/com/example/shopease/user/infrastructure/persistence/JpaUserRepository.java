@@ -3,7 +3,6 @@ package com.example.shopease.user.infrastructure.persistence;
 import com.example.shopease.user.domain.entities.User;
 import com.example.shopease.user.domain.repositories.UserRepository;
 import com.example.shopease.user.domain.valueobjects.Email;
-import com.example.shopease.user.domain.valueobjects.Role;
 import com.example.shopease.user.domain.valueobjects.UserId;
 import org.springframework.stereotype.Repository;
 
