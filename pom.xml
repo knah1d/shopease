@@ -100,4 +100,49 @@
 		</plugins>
 	</build>
 
+
+	<!-- added for checking user-only  -->
+	<profiles>
+		<!-- Profile for running only User module -->
+		<profile>
+			<id>user-only</id>
+			<properties>
+				<spring.profiles.active>user</spring.profiles.active>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<configuration>
+							<mainClass>com.example.shopease.UserOnlyApplication</mainClass>
+							<arguments>
+								<argument>--spring.profiles.active=user</argument>
+							</arguments>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<!-- Profile for full application -->
+		<profile>
+			<id>full-app</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<configuration>
+							<mainClass>com.example.shopease.EcommerceApplication</mainClass>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>

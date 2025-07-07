@@ -25,8 +25,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User registerUser(String name, String email, String password, String role) {
-        return registerUserUseCase.execute(name, email, password, role);
+    public User registerUser(String name, String email, String phone,String password) {
+        return registerUserUseCase.execute(name, email, phone, password);
     }
 
     public String loginUser(String email, String password) {

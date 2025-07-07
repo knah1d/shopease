@@ -14,38 +14,33 @@ public class UserEntity {
     
     @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false, unique = true)
+    private String phone;
     
     @Column(nullable = false)
     private String passwordHash;
-    
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private RoleEnum role;
-    
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
     
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    public enum RoleEnum {
-        CUSTOMER, SELLER
+    public UserEntity() {
     }
 
-    // Default constructor
-    public UserEntity() {}
-
     // Constructor
-    public UserEntity(String id, String name, String email, String passwordHash, 
-                     RoleEnum role, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public UserEntity(String id, String name, String email, String phone, String passwordHash, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.phone = phone;
         this.passwordHash = passwordHash;
-        this.role = role;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
 
     // Getters and Setters
     public String getId() {
@@ -72,20 +67,19 @@ public class UserEntity {
         this.email = email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
     public String getPasswordHash() {
         return passwordHash;
     }
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
-    }
-
-    public RoleEnum getRole() {
-        return role;
-    }
-
-    public void setRole(RoleEnum role) {
-        this.role = role;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -6,5 +6,4 @@ public interface AuthenticationService {
     User getCurrentUser();
     String getCurrentUserId();
     boolean isAuthenticated();
-    boolean hasRole(String role);
 }

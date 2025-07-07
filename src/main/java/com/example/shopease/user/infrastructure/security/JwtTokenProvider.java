@@ -32,8 +32,7 @@ public class JwtTokenProvider implements LoginUserUseCase.TokenProvider {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", user.getId().getValue());
         claims.put("email", user.getEmail().getValue());
-        claims.put("role", user.getRole().getValue());
-        
+
         return createToken(claims, user.getEmail().getValue());
     }
 

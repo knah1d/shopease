@@ -4,7 +4,6 @@ import com.example.shopease.user.domain.entities.User;
 import com.example.shopease.user.domain.exceptions.DuplicateEmailException;
 import com.example.shopease.user.domain.repositories.UserRepository;
 import com.example.shopease.user.domain.valueobjects.Email;
-import com.example.shopease.user.domain.valueobjects.Role;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +18,7 @@ public class RegisterUserUseCase {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User execute(String name, String email, String password, String role) {
+    public User execute(String name, String email, String phone, String password) {
         Email userEmail = new Email(email);
         
         if (userRepository.existsByEmail(userEmail)) {
@@ -27,9 +26,8 @@ public class RegisterUserUseCase {
         }
 
         String hashedPassword = passwordEncoder.encode(password);
-        Role userRole = Role.fromString(role);
-        
-        User user = new User(name, userEmail, hashedPassword, userRole);
+
+        User user = new User(name, userEmail, phone, hashedPassword);
         return userRepository.save(user);
     }
 
