@@ -16,7 +16,7 @@ import java.util.Map;
 @Component
 public class JwtTokenProvider implements LoginUserUseCase.TokenProvider {
 
-    @Value("${app.jwt.secret:mySecretKey}")
+    @Value("${app.jwt.secret:some-very-long-and-secure-secret-key-for-jwt-at-least-32-chars-long\n}")
     private String jwtSecret;
 
     @Value("${app.jwt.expiration:86400000}") // 24 hours in milliseconds

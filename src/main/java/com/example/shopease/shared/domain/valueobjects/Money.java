@@ -9,7 +9,7 @@ public class Money {
     private final String currency;
 
     public Money(BigDecimal amount, String currency) {
-        if (amount == null) {
+         if (amount == null) {
             throw new IllegalArgumentException("Amount cannot be null");
         }
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
