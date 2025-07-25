@@ -10,4 +10,12 @@ public class UserId extends BaseId {
     public UserId() {
         super();
     }
+    
+    public static UserId of(String value) {
+        return new UserId(value);
+    }
+    
+    public static UserId generate() {
+        return new UserId();
+    }
 }

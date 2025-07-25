@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.util.Objects;
 
 public class Money {
+    // Remove hardcoded ZERO - create zeros with appropriate currency instead
     private final BigDecimal amount;
     private final String currency;
 
@@ -29,6 +30,10 @@ public class Money {
 
     public Money(String amount, String currency) {
         this(new BigDecimal(amount), currency);
+    }
+
+    public static Money zero(String currency) {
+        return new Money(BigDecimal.ZERO, currency);
     }
 
     public BigDecimal getAmount() {
