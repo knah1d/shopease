@@ -18,6 +18,8 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -143,15 +145,29 @@ public class SSLCommerzService {
     }
     
     private PaymentInitiationResponse callSSLCommerzAPI(Map<String, Object> requestParams) throws Exception {
-        String jsonRequest = objectMapper.writeValueAsString(requestParams);
-        
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost(sslCommerzConfig.getInitiateUrl());
-            httpPost.setHeader("Content-Type", "application/json");
-            httpPost.setEntity(new StringEntity(jsonRequest, ContentType.APPLICATION_JSON));
+            
+            // SSLCommerz expects form data, not JSON
+            StringBuilder formData = new StringBuilder();
+            for (Map.Entry<String, Object> entry : requestParams.entrySet()) {
+                if (formData.length() > 0) {
+                    formData.append("&");
+                }
+                formData.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8))
+                        .append("=")
+                        .append(URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8));
+            }
+            
+            httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+            httpPost.setEntity(new StringEntity(formData.toString(), ContentType.APPLICATION_FORM_URLENCODED));
+            
+            log.info("Making SSLCommerz API call to: {}", sslCommerzConfig.getInitiateUrl());
+            log.debug("Request params: {}", requestParams);
             
             try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
                 String responseString = EntityUtils.toString(response.getEntity());
+                log.info("SSLCommerz API Response Status: {}", response.getCode());
                 log.debug("SSLCommerz API Response: {}", responseString);
                 
                 return objectMapper.readValue(responseString, PaymentInitiationResponse.class);
