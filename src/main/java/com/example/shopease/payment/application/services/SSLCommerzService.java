@@ -168,9 +168,41 @@ public class SSLCommerzService {
             try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
                 String responseString = EntityUtils.toString(response.getEntity());
                 log.info("SSLCommerz API Response Status: {}", response.getCode());
-                log.debug("SSLCommerz API Response: {}", responseString);
+                log.info("SSLCommerz API Response: {}", responseString);
                 
-                return objectMapper.readValue(responseString, PaymentInitiationResponse.class);
+                // Parse the response more carefully
+                try {
+                    return objectMapper.readValue(responseString, PaymentInitiationResponse.class);
+                } catch (Exception parseEx) {
+                    log.error("Failed to parse SSLCommerz response as PaymentInitiationResponse, creating manual response", parseEx);
+                    
+                    // If parsing fails, create a basic response with the error info
+                    PaymentInitiationResponse errorResponse = PaymentInitiationResponse.builder()
+                            .status("FAILED")
+                            .failedreason("SSLCommerz response parsing failed: " + parseEx.getMessage())
+                            .build();
+                    
+                    // Try to extract basic info manually if possible
+                    try {
+                        Map<String, Object> rawResponse = objectMapper.readValue(responseString, Map.class);
+                        if (rawResponse.containsKey("status")) {
+                            errorResponse.setStatus(String.valueOf(rawResponse.get("status")));
+                        }
+                        if (rawResponse.containsKey("failedreason")) {
+                            errorResponse.setFailedreason(String.valueOf(rawResponse.get("failedreason")));
+                        }
+                        if (rawResponse.containsKey("sessionkey")) {
+                            errorResponse.setSessionkey(String.valueOf(rawResponse.get("sessionkey")));
+                        }
+                        if (rawResponse.containsKey("GatewayPageURL")) {
+                            errorResponse.setGatewayPageURL(String.valueOf(rawResponse.get("GatewayPageURL")));
+                        }
+                    } catch (Exception e) {
+                        log.error("Failed to parse even basic response fields", e);
+                    }
+                    
+                    return errorResponse;
+                }
             }
         }
     }

@@ -26,7 +26,7 @@ public class PaymentInitiationResponse {
     private String GatewayPageURL;
     private String storeBanner;
     private String storeLogo;
-    private String desc;
+    private JsonNode desc; // Changed to JsonNode to handle array responses
     private String isDirectPayEnable;
     private String transactionId;
     
