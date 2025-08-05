@@ -15,13 +15,12 @@ public class PaymentSecurityConfig {
     @Bean
     public SecurityFilterChain paymentSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-            .securityMatcher("/api/payments/**", "/api/orders/*/payment", "/payment-test.html", "/payment/**")
-            .authorizeHttpRequests(authz -> authz
-                .anyRequest().permitAll()
-            )
-            .csrf(csrf -> csrf.disable())
-            .headers(headers -> headers.frameOptions().disable());
-        
+                .securityMatcher("/api/payments/**", "/api/orders/*/payment", "/payment-test.html", "/payment/**")
+                .authorizeHttpRequests(authz -> authz
+                        .anyRequest().permitAll())
+                .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers.frameOptions().disable());
+
         return http.build();
     }
 }

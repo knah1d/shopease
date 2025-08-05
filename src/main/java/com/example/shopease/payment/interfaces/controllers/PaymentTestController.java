@@ -13,24 +13,23 @@ import java.util.Map;
 @RequestMapping("/api/payments/test")
 @RequiredArgsConstructor
 public class PaymentTestController {
-    
+
     private final SSLCommerzConfig sslCommerzConfig;
-    
+
     @GetMapping("/config")
     public ResponseEntity<Map<String, Object>> getConfig() {
         Map<String, Object> config = Map.of(
-            "storeId", sslCommerzConfig.getStoreId() != null ? "***CONFIGURED***" : "NOT_SET",
-            "storePassword", sslCommerzConfig.getStorePassword() != null ? "***CONFIGURED***" : "NOT_SET",
-            "apiUrl", sslCommerzConfig.getApiUrl(),
-            "initiateUrl", sslCommerzConfig.getInitiateUrl(),
-            "validationUrl", sslCommerzConfig.getValidationUrl(),
-            "successUrl", sslCommerzConfig.getSuccessUrl(),
-            "failUrl", sslCommerzConfig.getFailUrl(),
-            "cancelUrl", sslCommerzConfig.getCancelUrl(),
-            "ipnUrl", sslCommerzConfig.getIpnUrl(),
-            "sandbox", sslCommerzConfig.isSandbox()
-        );
-        
+                "storeId", sslCommerzConfig.getStoreId() != null ? "***CONFIGURED***" : "NOT_SET",
+                "storePassword", sslCommerzConfig.getStorePassword() != null ? "***CONFIGURED***" : "NOT_SET",
+                "apiUrl", sslCommerzConfig.getApiUrl(),
+                "initiateUrl", sslCommerzConfig.getInitiateUrl(),
+                "validationUrl", sslCommerzConfig.getValidationUrl(),
+                "successUrl", sslCommerzConfig.getSuccessUrl(),
+                "failUrl", sslCommerzConfig.getFailUrl(),
+                "cancelUrl", sslCommerzConfig.getCancelUrl(),
+                "ipnUrl", sslCommerzConfig.getIpnUrl(),
+                "sandbox", sslCommerzConfig.isSandbox());
+
         return ResponseEntity.ok(config);
     }
 }
