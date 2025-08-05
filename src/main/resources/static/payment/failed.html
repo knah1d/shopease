@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Failed - ShopEase</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .error-icon {
+            color: #dc3545;
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-retry {
+            background-color: #28a745;
+        }
+        .btn-retry:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-icon">❌</div>
+        <h1>Payment Failed</h1>
+        <p>Unfortunately, your payment could not be processed.</p>
+        <p id="transactionInfo"></p>
+        <a href="/payment-test.html" class="btn btn-retry">Try Again</a>
+        <a href="/" class="btn">Back to Home</a>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const transactionId = urlParams.get('transaction');
+        
+        if (transactionId) {
+            document.getElementById('transactionInfo').innerHTML = 
+                `<strong>Transaction ID:</strong> ${transactionId}`;
+        }
+    </script>
+</body>
+</html>
