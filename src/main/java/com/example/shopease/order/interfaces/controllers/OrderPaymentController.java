@@ -20,14 +20,24 @@ public class OrderPaymentController {
     
     @PostMapping("/{orderId}/payment")
     public ResponseEntity<PaymentInitiationResponse> initiateOrderPayment(
-            @PathVariable Long orderId,
+            @PathVariable String orderId,
             @RequestBody PaymentRequest request) {
         
         log.info("Initiating payment for order: {}", orderId);
         
         try {
+            // Convert orderId to Long if it's numeric, otherwise use a hash or generate a numeric ID
+            Long orderIdLong;
+            try {
+                orderIdLong = Long.parseLong(orderId);
+            } catch (NumberFormatException e) {
+                // If orderId is not numeric (like UUID), generate a hash-based numeric ID
+                orderIdLong = Math.abs((long) orderId.hashCode());
+                log.info("Converting UUID orderId {} to numeric ID: {}", orderId, orderIdLong);
+            }
+            
             PaymentInitiationResponse response = orderPaymentService.initiateOrderPayment(
-                    orderId,
+                    orderIdLong,
                     request.getAmount(),
                     request.getCustomerName(),
                     request.getCustomerEmail(),
@@ -46,7 +56,7 @@ public class OrderPaymentController {
             PaymentInitiationResponse errorResponse = PaymentInitiationResponse.builder()
                     .status("FAILED")
                     .failedreason("Payment initiation failed: " + e.getMessage())
-                    .orderId(orderId)
+                    .orderId(orderIdLong)
                     .build();
             
             return ResponseEntity.internalServerError().body(errorResponse);
