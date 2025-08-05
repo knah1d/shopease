@@ -6,10 +6,16 @@ import com.example.shopease.order.application.usecases.GetOrderByIdUseCase;
 import com.example.shopease.order.application.usecases.GetOrdersByUserUseCase;
 import com.example.shopease.order.application.usecases.UpdateOrderStatusUseCase;
 import com.example.shopease.order.domain.repositories.OrderRepository;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
+@ComponentScan(basePackages = "com.example.shopease.order")
+@EnableJpaRepositories(basePackages = "com.example.shopease.order.infrastructure.persistence")
+@EntityScan(basePackages = {"com.example.shopease.order.domain.entities", "com.example.shopease.order.infrastructure.persistence"})
 public class OrderModuleConfiguration {
     
     @Bean
