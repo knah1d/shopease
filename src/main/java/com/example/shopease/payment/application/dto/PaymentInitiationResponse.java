@@ -1,5 +1,7 @@
 package com.example.shopease.payment.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -9,12 +11,13 @@ import lombok.AllArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PaymentInitiationResponse {
     
     private String status;
     private String failedreason;
     private String sessionkey;
-    private String gw;
+    private JsonNode gw; // Changed to JsonNode to handle object responses
     private String redirectGatewayURL;
     private String directPaymentURLBank;
     private String directPaymentURLCard;

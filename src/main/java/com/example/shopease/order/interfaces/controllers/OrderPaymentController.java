@@ -25,17 +25,17 @@ public class OrderPaymentController {
         
         log.info("Initiating payment for order: {}", orderId);
         
+        // Convert orderId to Long if it's numeric, otherwise use a hash or generate a numeric ID
+        Long orderIdLong;
         try {
-            // Convert orderId to Long if it's numeric, otherwise use a hash or generate a numeric ID
-            Long orderIdLong;
-            try {
-                orderIdLong = Long.parseLong(orderId);
-            } catch (NumberFormatException e) {
-                // If orderId is not numeric (like UUID), generate a hash-based numeric ID
-                orderIdLong = Math.abs((long) orderId.hashCode());
-                log.info("Converting UUID orderId {} to numeric ID: {}", orderId, orderIdLong);
-            }
-            
+            orderIdLong = Long.parseLong(orderId);
+        } catch (NumberFormatException e) {
+            // If orderId is not numeric (like UUID), generate a hash-based numeric ID
+            orderIdLong = Math.abs((long) orderId.hashCode());
+            log.info("Converting UUID orderId {} to numeric ID: {}", orderId, orderIdLong);
+        }
+        
+        try {
             PaymentInitiationResponse response = orderPaymentService.initiateOrderPayment(
                     orderIdLong,
                     request.getAmount(),
