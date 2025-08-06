@@ -52,14 +52,37 @@ class ApiClient {
       
       // Handle non-200 responses
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`API Error: ${response.status} - ${errorText}`);
+        let errorMessage = `API Error: ${response.status}`;
+        try {
+          const errorData = await response.json();
+          if (errorData.message) {
+            errorMessage = errorData.message;
+          }
+          if (errorData.errors) {
+            // Handle validation errors
+            const validationErrors = Object.entries(errorData.errors)
+              .map(([field, message]) => `${field}: ${message}`)
+              .join(', ');
+            errorMessage = `${errorData.message || 'Validation failed'}: ${validationErrors}`;
+          }
+        } catch {
+          errorMessage = await response.text() || errorMessage;
+        }
+        throw new Error(errorMessage);
       }
 
       // Check if response has content
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
-        return await response.json();
+        const data = await response.json();
+        // Handle backend response format that wraps data
+        if (data.success !== undefined) {
+          if (!data.success) {
+            throw new Error(data.message || 'API request failed');
+          }
+          return data.data || data;
+        }
+        return data;
       } else {
         return {} as T;
       }

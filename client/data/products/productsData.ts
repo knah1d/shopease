@@ -18,7 +18,7 @@ export const productsData = [
       {
         content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio voluptatem aliquam reprehenderit debitis quidem accusantium",
         rating:4,
-        author: "Shohag miah",
+        author: "shopease",
         image: "/images/people/person.jpg",
         date: new Date(),
       },
@@ -52,7 +52,7 @@ export const productsData = [
       {
         content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio voluptatem aliquam reprehenderit debitis quidem accusantium",
         rating:4,
-        author: "Shohag miah",
+        author: "shopease ",
         image: "/images/people/person.jpg",
         date: new Date(),
       },
@@ -83,7 +83,7 @@ export const productsData = [
       {
         content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio voluptatem aliquam reprehenderit debitis quidem accusantium",
         rating:4,
-        author: "Shohag miah",
+        author: "shopease ",
         image: "/images/people/person.jpg",
         date: new Date(),
       },
@@ -110,7 +110,7 @@ export const productsData = [
     reviews: [
       {
         content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio voluptatem aliquam reprehenderit debitis quidem accusantium",
-        author: "Shohag miah",
+        author: "shopease ",
         rating:4,
         image: "/images/people/person.jpg",
         date: new Date(),
@@ -144,7 +144,7 @@ export const productsData = [
     reviews: [
       {
         content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio voluptatem aliquam reprehenderit debitis quidem accusantium",
-        author: "Shohag miah",
+        author: "shopease ",
         rating:4,
         image: "/images/people/person.jpg",
         date: new Date(),
@@ -175,7 +175,7 @@ export const productsData = [
     reviews: [
       {
         content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio voluptatem aliquam reprehenderit debitis quidem accusantium",
-        author: "Shohag miah",
+        author: "shopease ",
         rating:4,
         image: "/images/people/person.jpg",
         date: new Date(),
@@ -206,7 +206,7 @@ export const productsData = [
     reviews: [
       {
         content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio voluptatem aliquam reprehenderit debitis quidem accusantium",
-        author: "Shohag miah",
+        author: "shopease ",
         rating:4,
         image: "/images/people/person.jpg",
         date: new Date(),
@@ -238,7 +238,7 @@ export const productsData = [
     reviews: [
       {
         content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio voluptatem aliquam reprehenderit debitis quidem accusantium",
-        author: "Shohag miah",
+        author: "shopease ",
         rating:4,
         image: "/images/people/person.jpg",
         date: new Date(),
@@ -272,7 +272,7 @@ export const productsData = [
       {
         content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio voluptatem aliquam reprehenderit debitis quidem accusantium",
         rating:4,
-        author: "Shohag miah",
+        author: "shopease ",
         image: "/images/people/person.jpg",
         date: new Date(),
       },
@@ -303,7 +303,7 @@ export const productsData = [
     reviews: [
       {
         content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio voluptatem aliquam reprehenderit debitis quidem accusantium",
-        author: "Shohag miah",
+        author: "shopease ",
         rating:4,
         image: "/images/people/person.jpg",
         date: new Date(),
@@ -334,7 +334,7 @@ export const productsData = [
     reviews: [
       {
         content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio voluptatem aliquam reprehenderit debitis quidem accusantium",
-        author: "Shohag miah",
+        author: "shopease ",
         rating:4,
         image: "/images/people/person.jpg",
         date: new Date(),
@@ -365,7 +365,7 @@ export const productsData = [
     reviews: [
       {
         content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio voluptatem aliquam reprehenderit debitis quidem accusantium",
-        author: "Shohag miah",
+        author: "shopease ",
         rating:4,
         image: "/images/people/person.jpg",
         date: new Date(),
@@ -396,7 +396,7 @@ export const productsData = [
     reviews: [
       {
         content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio voluptatem aliquam reprehenderit debitis quidem accusantium",
-        author: "Shohag miah",
+        author: "shopease ",
         rating:4,
         image: "/images/people/person.jpg",
         date: new Date(),
@@ -428,7 +428,7 @@ export const productsData = [
     reviews: [
       {
         content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio voluptatem aliquam reprehenderit debitis quidem accusantium",
-        author: "Shohag miah",
+        author: "shopease ",
         rating:4,
         image: "/images/people/person.jpg",
         date: new Date(),
@@ -460,7 +460,7 @@ export const productsData = [
     reviews: [
       {
         content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio voluptatem aliquam reprehenderit debitis quidem accusantium",
-        author: "Shohag miah",
+        author: "shopease ",
         rating:4,
         image: "/images/people/person.jpg",
         date: new Date(),
@@ -491,7 +491,7 @@ export const productsData = [
     reviews: [
       {
         content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Distinctio voluptatem aliquam reprehenderit debitis quidem accusantium",
-        author: "Shohag miah",
+        author: "shopease ",
         image: "/images/people/person.jpg",
         rating:4,
         date: new Date(),

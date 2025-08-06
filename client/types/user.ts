@@ -3,7 +3,7 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  phone?: string;
+  phone: string;
   address?: string;
   createdAt: string;
   updatedAt: string;
@@ -12,8 +12,8 @@ export interface User {
 export interface RegisterUserRequest {
   name: string;
   email: string;
+  phone: string;
   password: string;
-  phone?: string;
   address?: string;
 }
 
@@ -36,7 +36,7 @@ export interface UserProfile {
   id: string;
   name: string;
   email: string;
-  phone?: string;
+  phone: string;
   address?: string;
   createdAt: string;
   updatedAt: string;

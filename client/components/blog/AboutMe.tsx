@@ -22,10 +22,10 @@ const AboutMe = () => {
             />
             <div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-               Shohag Miah
+               Shopease
               </h3>
               <p className="text-gray-700 dark:text-gray-300">
-                CEO, Company Inc.
+                CEO, Shopease
               </p>
             </div>
           </div>

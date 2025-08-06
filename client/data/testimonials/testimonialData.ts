@@ -10,7 +10,7 @@ export const  testinomials = [
     },
     {
         id:2,
-        name:'Shohag miah',
+        name:'shopease ',
         image:'/images/people/person.jpg',
         designation:'CEO, Binarybard Inc.',
         content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ac
