@@ -1,4 +1,4 @@
-package com.example.shopease.order.interfaces.controllers;
+package com.example.shopease.order.interfaces.rest;
 
 import com.example.shopease.order.application.services.OrderPaymentService;
 import com.example.shopease.payment.application.dto.PaymentInitiationResponse;
