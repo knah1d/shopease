@@ -1,12 +1,48 @@
+'use client';
 import ProductActions from "@/components/dashboard/product/ProductActions";
 import ProductHeader from "@/components/dashboard/product/ProductHeader";
 import Loader from "@/components/others/Loader";
 import Pagination from "@/components/others/Pagination";
-import { productsData } from "@/data/products/productsData";
+import { useProducts } from "@/hooks";
+import { adaptBackendProductsToFrontend } from "@/lib/productAdapter";
+import { Product } from "@/types";
 import Image from "next/image";
-import React, { Suspense } from "react";
+import React, { useEffect, useState } from "react";
 
 const ProductsPage = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const { products: backendProducts, isLoading, error, fetchAllProducts } = useProducts();
+
+  useEffect(() => {
+    fetchAllProducts();
+  }, [fetchAllProducts]);
+
+  useEffect(() => {
+    if (backendProducts.length > 0) {
+      const adaptedProducts = adaptBackendProductsToFrontend(backendProducts);
+      setProducts(adaptedProducts);
+    }
+  }, [backendProducts]);
+
+  if (isLoading) {
+    return (
+      <div className="max-w-screen-xl mx-auto w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 my-4">
+        <div className="flex items-center justify-center h-64">
+          <Loader />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-screen-xl mx-auto w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 my-4">
+        <div className="flex items-center justify-center h-64">
+          <p className="text-red-600">Error loading products: {error}</p>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="max-w-screen-xl mx-auto w-full bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 my-4">
       <ProductHeader />
@@ -32,7 +68,7 @@ const ProductsPage = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-            {productsData.slice(0, 6).map((product) => (
+            {products.slice(0, 6).map((product) => (
               <tr key={product.id} className="bg-white dark:bg-gray-800">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <Image
@@ -57,9 +93,13 @@ const ProductsPage = () => {
             ))}
           </tbody>
         </table>
-        <Suspense fallback={<Loader />}>
-          <Pagination totalPages={10} currentPage={1} pageName="productpage" />
-        </Suspense>
+                <Pagination />
+      </div>
+    </div>
+  );
+};
+
+export default ProductsPage;
       </div>
     </div>
   );
