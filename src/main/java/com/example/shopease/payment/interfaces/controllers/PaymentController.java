@@ -3,7 +3,8 @@ package com.example.shopease.payment.interfaces.controllers;
 import com.example.shopease.payment.application.dto.PaymentInitiationRequest;
 import com.example.shopease.payment.application.dto.PaymentInitiationResponse;
 import com.example.shopease.payment.application.services.SSLCommerzService;
-import com.example.shopease.payment.domain.entities.Payment;
+import com.example.shopease.payment.infrastructure.entities.Payment;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

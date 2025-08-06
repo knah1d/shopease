@@ -6,7 +6,11 @@ import com.example.shopease.user.application.usecases.RegisterUserUseCase;
 import com.example.shopease.user.domain.entities.User;
 import com.example.shopease.user.domain.repositories.UserRepository;
 import com.example.shopease.user.domain.valueobjects.Email;
+import com.example.shopease.user.domain.valueobjects.Role;
+import com.example.shopease.user.domain.valueobjects.UserId;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -16,16 +20,16 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserService(RegisterUserUseCase registerUserUseCase,
-                      LoginUserUseCase loginUserUseCase,
-                      GetUserProfileUseCase getUserProfileUseCase,
-                      UserRepository userRepository) {
+            LoginUserUseCase loginUserUseCase,
+            GetUserProfileUseCase getUserProfileUseCase,
+            UserRepository userRepository) {
         this.registerUserUseCase = registerUserUseCase;
         this.loginUserUseCase = loginUserUseCase;
         this.getUserProfileUseCase = getUserProfileUseCase;
         this.userRepository = userRepository;
     }
 
-    public User registerUser(String name, String email, String phone,String password) {
+    public User registerUser(String name, String email, String phone, String password) {
         return registerUserUseCase.execute(name, email, phone, password);
     }
 
@@ -36,9 +40,40 @@ public class UserService {
     public User getUserProfile(String userId) {
         return getUserProfileUseCase.execute(userId);
     }
-    
+
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(new Email(email))
-            .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    // Admin methods
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public List<User> getUsersByRole(String roleName) {
+        Role role = new Role(roleName);
+        return userRepository.findByRole(role);
+    }
+
+    public User updateUserRole(String userId, Role role) {
+        User user = userRepository.findById(new UserId(userId))
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setRole(role);
+        return userRepository.save(user);
+    }
+
+    public User activateUser(String userId) {
+        User user = userRepository.findById(new UserId(userId))
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setIsActive(true);
+        return userRepository.save(user);
+    }
+
+    public User deactivateUser(String userId) {
+        User user = userRepository.findById(new UserId(userId))
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setIsActive(false);
+        return userRepository.save(user);
     }
 }

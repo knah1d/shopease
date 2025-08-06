@@ -1,4 +1,4 @@
-package com.example.shopease.payment.domain.entities;
+package com.example.shopease.payment.infrastructure.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
