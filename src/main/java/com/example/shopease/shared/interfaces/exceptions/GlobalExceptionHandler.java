@@ -3,6 +3,8 @@ package com.example.shopease.shared.interfaces.exceptions;
 import com.example.shopease.shared.domain.exceptions.DomainException;
 import com.example.shopease.shared.interfaces.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -16,9 +18,12 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(DomainException.class)
     public ResponseEntity<ErrorResponse> handleDomainException(
             DomainException ex, HttpServletRequest request) {
+        logger.error("Domain exception occurred: ", ex);
         ErrorResponse errorResponse = new ErrorResponse(
                 ex.getMessage(),
                 "DOMAIN_ERROR",
@@ -58,8 +63,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(
             Exception ex, HttpServletRequest request) {
+        logger.error("Unexpected error occurred: ", ex);
         ErrorResponse errorResponse = new ErrorResponse(
-                "An unexpected error occurred",
+                "An unexpected error occurred: " + ex.getMessage(),
                 "INTERNAL_SERVER_ERROR",
                 request.getRequestURI());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
