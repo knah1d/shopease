@@ -58,8 +58,7 @@ public class JpaUserRepository implements UserRepository {
 
     @Override
     public List<User> findByRole(Role role) {
-        // Since role column doesn't exist in DB, return all users for now
-        return springDataUserRepository.findAll()
+        return springDataUserRepository.findByRole(role.getValue())
                 .stream()
                 .map(this::toDomain)
                 .collect(Collectors.toList());
@@ -67,15 +66,14 @@ public class JpaUserRepository implements UserRepository {
 
     @Override
     public List<User> findByIsActive(Boolean isActive) {
-        // Since isActive column doesn't exist in DB, return all users for now
-        return springDataUserRepository.findAll()
+        return springDataUserRepository.findByIsActive(isActive)
                 .stream()
                 .map(this::toDomain)
                 .collect(Collectors.toList());
     }
 
     private UserEntity toEntity(User user) {
-        return new UserEntity(
+        UserEntity entity = new UserEntity(
                 user.getId().getValue(),
                 user.getName(),
                 user.getEmail().getValue(),
@@ -83,6 +81,9 @@ public class JpaUserRepository implements UserRepository {
                 user.getPasswordHash(),
                 user.getCreatedAt(),
                 user.getUpdatedAt());
+        entity.setRole(user.getRole() != null ? user.getRole().getValue() : Role.CUSTOMER);
+        entity.setActive(user.getIsActive());
+        return entity;
     }
 
     private User toDomain(UserEntity entity) {
@@ -92,8 +93,7 @@ public class JpaUserRepository implements UserRepository {
                 new Email(entity.getEmail()),
                 entity.getPhone(),
                 entity.getPasswordHash(),
-                new Role(Role.CUSTOMER), // Default role since column doesn't exist in DB
-                true // Default isActive to true since column doesn't exist in DB
-        );
+                new Role(entity.getRole() != null ? entity.getRole() : Role.CUSTOMER),
+                entity.isActive());
     }
 }
