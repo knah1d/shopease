@@ -1,6 +1,13 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -22,6 +29,9 @@ const signUpSchema = z
         confirmPassword: z
             .string()
             .min(6, "Password must be at least 6 characters"),
+        role: z.enum(["CUSTOMER", "SELLER"], {
+            required_error: "Please select a role",
+        }),
     })
     .refine((data) => data.password === data.confirmPassword, {
         message: "Passwords don't match",
@@ -32,6 +42,7 @@ type SignUpFormData = z.infer<typeof signUpSchema>;
 
 const SignUpForm = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedRole, setSelectedRole] = useState<string>("");
     const { register: registerUser } = useAuth();
     const router = useRouter();
 
@@ -52,6 +63,7 @@ const SignUpForm = () => {
                 email: data.email,
                 phone: data.phone,
                 password: data.password,
+                role: data.role,
             });
             toast.success("Account created successfully! Please sign in.");
             router.push("/sign-in");
@@ -146,6 +158,48 @@ const SignUpForm = () => {
                         {errors.phone && (
                             <p className="text-red-500 text-sm mt-1">
                                 {errors.phone.message}
+                            </p>
+                        )}
+                    </div>
+                    <div>
+                        <Label
+                            htmlFor="role"
+                            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                        >
+                            Account Type
+                        </Label>
+                        <Select
+                            value={selectedRole}
+                            onValueChange={(value) => {
+                                setSelectedRole(value);
+                            }}
+                        >
+                            <SelectTrigger
+                                className={`w-full ${
+                                    errors.role
+                                        ? "border-red-500"
+                                        : "border-gray-300"
+                                }`}
+                            >
+                                <SelectValue placeholder="Select account type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="CUSTOMER">
+                                    Customer - Buy products
+                                </SelectItem>
+                                <SelectItem value="SELLER">
+                                    Seller - Sell products
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <input
+                            type="hidden"
+                            {...register("role")}
+                            value={selectedRole}
+                        />
+                        {errors.role && (
+                            <p className="text-red-500 text-sm mt-1">
+                                {errors.role.message}
                             </p>
                         )}
                     </div>

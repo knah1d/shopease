@@ -50,6 +50,8 @@ class UserService {
           email: loginData.email,
           phone: loginData.phone,
           address: loginData.address,
+          role: loginData.role || 'CUSTOMER',
+          isActive: loginData.isActive || true,
           createdAt: loginData.createdAt,
           updatedAt: loginData.updatedAt,
         };
@@ -112,6 +114,27 @@ class UserService {
   getAuthToken(): string | null {
     if (typeof window === 'undefined') return null;
     return localStorage.getItem('authToken');
+  }
+
+  // Check user role
+  hasRole(role: string): boolean {
+    const user = this.getCurrentUser();
+    return user?.role === role;
+  }
+
+  // Check if user is admin
+  isAdmin(): boolean {
+    return this.hasRole('ADMIN');
+  }
+
+  // Check if user is seller
+  isSeller(): boolean {
+    return this.hasRole('SELLER');
+  }
+
+  // Check if user is customer
+  isCustomer(): boolean {
+    return this.hasRole('CUSTOMER');
   }
 }
 

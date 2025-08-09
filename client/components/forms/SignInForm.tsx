@@ -39,7 +39,22 @@ const SignInForm = () => {
             const response = await login(data);
             console.log("Login response:", response);
             toast.success("Signed in successfully!");
-            router.push("/"); // Redirect to home instead of dashboard
+
+            // Redirect based on user role
+            const userRole = response.user?.role;
+            switch (userRole) {
+                case "ADMIN":
+                    router.push("/admin/dashboard");
+                    break;
+                case "SELLER":
+                    router.push("/seller/dashboard");
+                    break;
+                case "CUSTOMER":
+                    router.push("/customer/home");
+                    break;
+                default:
+                    router.push("/");
+            }
         } catch (error) {
             console.error("Login error:", error);
             toast.error(

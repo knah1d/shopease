@@ -4,3 +4,4 @@ export { productService } from './productService';
 export { orderService } from './orderService';
 export { paymentService } from './paymentService';
 export { cartService } from './cartService';
+export { adminService } from './adminService';

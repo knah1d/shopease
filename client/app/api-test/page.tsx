@@ -6,6 +6,7 @@ import {
     productService,
     orderService,
     paymentService,
+    adminService,
 } from "@/services";
 
 export default function ApiTestPage() {
@@ -36,10 +37,16 @@ export default function ApiTestPage() {
     };
 
     const testEndpoints = {
-        // User API Tests
+        // Product API Tests
         "Get All Products": () => productService.getAllProducts(),
-        "Search Products": () =>
+        "Search Products by Name": () =>
             productService.searchProducts({ name: "test" }),
+        "Search Products by Category": () =>
+            productService.searchProducts({ category: "Electronics" }),
+        "Get Products by Category": () =>
+            productService.getProductsByCategory("Electronics"),
+
+        // Payment Tests
         "Get Payment Test Config": () => paymentService.getTestConfig(),
 
         // Authentication Tests (these require actual data)
@@ -47,6 +54,7 @@ export default function ApiTestPage() {
             userService.register({
                 name: "Test User",
                 email: "test@example.com",
+                phone: "1234567890",
                 password: "password123",
             }),
 
@@ -59,11 +67,16 @@ export default function ApiTestPage() {
         // Order Tests (require authentication)
         "Get User Orders": () => orderService.getCurrentUserOrders(),
 
+        // Admin Tests (require admin authentication)
+        "Get Dashboard Stats": () => adminService.getDashboardStats(),
+        "Get All Users": () => adminService.getAllUsers(),
+        "Get Customers": () => adminService.getCustomers(),
+        "Get Sellers": () => adminService.getSellers(),
+
         // Payment Tests
         "Check Payment Status": () =>
             paymentService.getPaymentStatus("test-transaction-id"),
     };
-
     return (
         <div className="container mx-auto px-4 py-8">
             <h1 className="text-3xl font-bold mb-8">API Test Page</h1>

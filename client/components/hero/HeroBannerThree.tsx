@@ -21,7 +21,7 @@ const HeroBannerThree = () => {
         </div>
         <div className="relative h-[20rem] lg:w-1/2 mt-8 lg:mt-0">
           <Image
-            src={"/images/category/headphone.png"}
+            src={"/images/categories/headphone.png"}
             alt="Tech Gadgets"
             fill
             className="w-full rounded-lg shadow-lg object-contain"

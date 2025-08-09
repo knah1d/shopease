@@ -32,6 +32,19 @@ const UserAvatar = () => {
         router.push("/");
     };
 
+    const getRoleDashboard = () => {
+        switch (user?.role) {
+            case "ADMIN":
+                return "/admin/dashboard";
+            case "SELLER":
+                return "/seller/dashboard";
+            case "CUSTOMER":
+                return "/customer/home";
+            default:
+                return "/profile";
+        }
+    };
+
     if (isAuthenticated && user) {
         return (
             <DropdownMenu>
@@ -50,22 +63,33 @@ const UserAvatar = () => {
                 <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuItem asChild>
                         <Link
-                            href="/my-account"
+                            href={getRoleDashboard()}
                             className="flex items-center gap-2"
                         >
                             <User size={16} />
-                            My Account
+                            Dashboard
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                         <Link
-                            href="/my-orders"
+                            href="/profile"
                             className="flex items-center gap-2"
                         >
-                            <ShoppingBag size={16} />
-                            My Orders
+                            <User size={16} />
+                            My Profile
                         </Link>
                     </DropdownMenuItem>
+                    {user.role === "CUSTOMER" && (
+                        <DropdownMenuItem asChild>
+                            <Link
+                                href="/my-orders"
+                                className="flex items-center gap-2"
+                            >
+                                <ShoppingBag size={16} />
+                                My Orders
+                            </Link>
+                        </DropdownMenuItem>
+                    )}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                         onClick={handleLogout}

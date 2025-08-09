@@ -26,8 +26,8 @@ export const productsData = [
     brand: "Apple",
     color: ['white', 'gray', 'blue','silver'],
     images: [
-      "/images/products/apple-watch-9-removebg-preview.png",
-      "/images/products/apple-watch-9-3-removebg-preview.png",
+      "/images/products/watches/apple-watch-9-removebg-preview.png",
+      "/images/products/watches/apple-watch-9-3-removebg-preview.png",
     ],
   },
   {
@@ -58,8 +58,8 @@ export const productsData = [
       },
     ],
     images: [
-      "/images/products/apple-watch-se-removebg-preview.png",
-      "/images/products/apple-watch-se-2-removebg-preview.png",
+      "/images/products/watches/apple-watch-se-removebg-preview.png",
+      "/images/products/watches/apple-watch-se-2-removebg-preview.png",
     ],
   },
   {
@@ -90,7 +90,7 @@ export const productsData = [
     ],
     discount: 10,
     images: [
-      "/images/products/firebolt-ninja-removebg-preview.png"
+      "/images/products/watches/firebolt-ninja-removebg-preview.png"
     ],
   },
   {
@@ -119,8 +119,8 @@ export const productsData = [
     brand: "none",
     color: ['white', 'gray', 'blue'],
     images: [
-      "/images/products/galaxy-watch-4-removebg-preview.png",
-      "/images/products/galaxy-watch-4-2-removebg-preview.png",
+      "/images/products/watches/galaxy-watch-4-removebg-preview.png",
+      "/images/products/watches/galaxy-watch-4-2-removebg-preview.png",
     ],
   },
   {
@@ -151,8 +151,8 @@ export const productsData = [
       },
     ],
     images: [
-      "/images/products/asus-vivobook-removebg-preview.png",
-      "/images/products/asus-vivobook-2-removebg-preview.png",
+      "/images/products/computers/asus-vivobook-removebg-preview.png",
+      "/images/products/computers/asus-vivobook-2-removebg-preview.png",
     ],
   },
   {
@@ -183,7 +183,7 @@ export const productsData = [
     ],
     discount: 10,
     images: [
-      "/images/products/dell-gaming-removebg-preview.png"
+      "/images/products/computers/dell-gaming-removebg-preview.png"
     ],
   },
   {
@@ -214,8 +214,8 @@ export const productsData = [
     ],
     discount: 5,
     images: [
-      "/images/products/lenova-removebg-preview.png",
-      '/images/products/lenova-2-removebg-preview.png'
+      "/images/products/computers/lenova-removebg-preview.png",
+      '/images/products/computers/lenova-2-removebg-preview.png'
     ],
   },
   {
@@ -246,9 +246,9 @@ export const productsData = [
     ],
     discount: 6,
     images: [
-      "/images/products/msi-modern-14-removebg-preview.png",
-      '/images/products/msi-modern-14-2-removebg-preview.png',
-      '/images/products/msi-modern-14-3-removebg-preview.png'
+      "/images/products/computers/msi-modern-14-removebg-preview.png",
+      '/images/products/computers/msi-modern-14-2-removebg-preview.png',
+      '/images/products/computers/msi-modern-14-3-removebg-preview.png'
     ],
   },
   {
@@ -279,8 +279,8 @@ export const productsData = [
     ],
     discount: 15,
     images: [
-      "/images/products/sony-dynamic-removebg-preview.png",
-      '/images/products/sony-dynamic-2-removebg-preview.png',
+      "/images/products/headphones/sony-dynamic-removebg-preview.png",
+      '/images/products/headphones/sony-dynamic-2-removebg-preview.png',
     ],
   },
   {
@@ -311,7 +311,7 @@ export const productsData = [
     ],
     discount: 5,
     images: [
-      "/images/products/song-wh-removebg-preview.png",
+      "/images/products/headphones/song-wh-removebg-preview.png",
     ],
   },
   {
@@ -342,7 +342,7 @@ export const productsData = [
     ],
     discount: 12,
     images: [
-      "/images/products/senheiser-removebg-preview.png",
+      "/images/products/headphones/senheiser-removebg-preview.png",
     ],
   },
   {
@@ -373,7 +373,7 @@ export const productsData = [
     ],
     discount: 12,
     images: [
-      "/images/products/prothonics-removebg-preview.png",
+      "/images/products/headphones/prothonics-removebg-preview.png",
     ],
   },
   {
@@ -404,8 +404,8 @@ export const productsData = [
     ],
     discount: 12,
     images: [
-      "/images/products/peco-m6-removebg-preview.png",
-      '/images/products/peco-m6-2-removebg-preview.png'
+      "/images/products/phones/peco-m6-removebg-preview.png",
+      '/images/products/phones/peco-m6-2-removebg-preview.png'
     ],
   },
   {
@@ -436,8 +436,8 @@ export const productsData = [
     ],
     discount: 12,
     images: [
-      "/images/products/readme-13-c-removebg-preview.png",
-      '/images/products/readme-13c-2-removebg-preview.png'
+      "/images/products/phones/readme-13-c-removebg-preview.png",
+      '/images/products/phones/readme-13c-2-removebg-preview.png'
     ],
   },
   {
@@ -468,7 +468,7 @@ export const productsData = [
     ],
     discount: 5,
     images: [
-      "/images/products/lava_agni-removebg-preview.png",
+      "/images/products/phones/lava_agni-removebg-preview.png",
     ],
   },
   {
@@ -499,7 +499,7 @@ export const productsData = [
     ],
     discount: 5,
     images: [
-      "/images/products/galaxy-15-removebg-preview.png",
+      "/images/products/phones/galaxy-15-removebg-preview.png",
     ],
   },
 ];

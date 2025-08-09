@@ -6,7 +6,7 @@ import { z } from "zod";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useOrders } from "@/hooks";
+import { useOrders, usePayment } from "@/hooks";
 import { useAuth } from "@/hooks";
 import useCartStore from "@/store/cartStore";
 import { toast } from "sonner";
@@ -29,8 +29,10 @@ type FormData = z.infer<typeof schema>;
 const CheckoutForm: React.FC = () => {
     const [isProcessing, setIsProcessing] = useState(false);
     const { createOrder } = useOrders();
+    const { processOrderPayment, isProcessing: isPaymentProcessing } =
+        usePayment();
     const { user, isAuthenticated } = useAuth();
-    const { cartItems, clearCart } = useCartStore();
+    const { cartItems, getTotalPrice } = useCartStore();
     const router = useRouter();
 
     // Initialize React Hook Form
@@ -55,8 +57,15 @@ const CheckoutForm: React.FC = () => {
             return;
         }
 
+        const totalAmount = getTotalPrice();
+        if (totalAmount <= 0) {
+            toast.error("Invalid order total");
+            return;
+        }
+
         setIsProcessing(true);
         try {
+            // Step 1: Create the order first
             const orderData = {
                 items: cartItems.map((item) => ({
                     productId: item.id.toString(),
@@ -73,9 +82,15 @@ const CheckoutForm: React.FC = () => {
             };
 
             const order = await createOrder(orderData);
-            clearCart(); // Clear the cart after successful order
-            toast.success("Order placed successfully!");
-            router.push(`/my-orders`); // Redirect to orders page
+            toast.success(
+                "Order created successfully! Redirecting to payment..."
+            );
+
+            // Step 2: Initiate SSLCommerz payment
+            await processOrderPayment(order.id);
+
+            // Note: User will be redirected to SSLCommerz payment page
+            // Cart will be cleared after successful payment callback
         } catch (error) {
             toast.error("Failed to place order. Please try again.");
             console.error("Order placement failed:", error);
@@ -188,10 +203,16 @@ const CheckoutForm: React.FC = () => {
                 <div className="flex items-center justify-end">
                     <Button
                         type="submit"
-                        disabled={isProcessing || cartItems.length === 0}
+                        disabled={
+                            isProcessing ||
+                            isPaymentProcessing ||
+                            cartItems.length === 0
+                        }
                         className="disabled:opacity-50"
                     >
-                        {isProcessing ? "Placing Order..." : "Place Order"}
+                        {isProcessing || isPaymentProcessing
+                            ? "Processing..."
+                            : "Place Order & Pay"}
                     </Button>
                 </div>
             </form>

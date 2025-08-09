@@ -2,7 +2,6 @@
 import React, { Suspense, useEffect, useState } from "react";
 import ProductViewChange from "../product/ProductViewChange";
 import { useProducts } from "@/hooks";
-import { adaptBackendProductsToFrontend } from "@/lib/productAdapter";
 import Pagination from "../others/Pagination";
 import SingleProductListView from "@/components/product/SingleProductListView";
 import { Product, SearchParams } from "@/types";
@@ -29,17 +28,7 @@ const ShopPageContainer = ({
     const itemsPerPage = 6;
 
     // Get products from backend
-    const { products, isLoading, error, fetchAllProducts, searchProducts } =
-        useProducts();
-    const [backendProducts, setBackendProducts] = useState<Product[]>([]);
-
-    // Convert backend products to frontend format
-    useEffect(() => {
-        if (products.length > 0) {
-            const adaptedProducts = adaptBackendProductsToFrontend(products);
-            setBackendProducts(adaptedProducts);
-        }
-    }, [products]);
+    const { products, isLoading, error, fetchAllProducts } = useProducts();
 
     // Fetch products from backend on component mount
     useEffect(() => {
@@ -48,25 +37,25 @@ const ShopPageContainer = ({
 
     // Function to filter data based on search params
     const filterData = () => {
-        let filteredProducts = backendProducts;
+        let filteredProducts = products;
 
         // Filter by category
         if (searchParams.category) {
             filteredProducts = filteredProducts.filter(
-                (product) => product.category === searchParams.category
+                (product: Product) => product.category === searchParams.category
             );
         }
 
         // Filter by brand
         if (searchParams.brand) {
             filteredProducts = filteredProducts.filter(
-                (product) => product?.brand === searchParams.brand
+                (product: Product) => product?.brand === searchParams.brand
             );
         }
 
         // Filter by color
         if (searchParams.color) {
-            filteredProducts = filteredProducts.filter((product) =>
+            filteredProducts = filteredProducts.filter((product: Product) =>
                 product?.color?.includes(searchParams.color)
             );
         }
@@ -76,7 +65,7 @@ const ShopPageContainer = ({
             const minPrice = parseFloat(searchParams.min);
             const maxPrice = parseFloat(searchParams.max);
             filteredProducts = filteredProducts.filter(
-                (product) =>
+                (product: Product) =>
                     product.price >= minPrice && product.price <= maxPrice
             );
         }
@@ -88,7 +77,7 @@ const ShopPageContainer = ({
 
     // Update filtered data whenever search params or products change
     useEffect(() => {
-        if (backendProducts.length > 0) {
+        if (products.length > 0) {
             setLoading(true);
             const filteredProducts = filterData();
             setFilteredData(filteredProducts!);
@@ -96,7 +85,7 @@ const ShopPageContainer = ({
             setLoading(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchParams, backendProducts]);
+    }, [searchParams, products]);
 
     // change currentPage when searchparams page change
     useEffect(() => {

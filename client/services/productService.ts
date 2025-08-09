@@ -1,113 +1,224 @@
-import { apiClient } from '@/lib/api';
-import { 
-  Product, 
-  CreateProductRequest, 
-  UpdateProductPriceRequest, 
-  UpdateProductStockRequest,
-  ProductSearchParams,
-  ProductSearchResponse 
-} from '@/types/product';
+import { apiClient } from '../lib/api';
+import { Product, Review } from '@/types';
 
-class ProductService {
-  // Create a new product
-  async createProduct(productData: CreateProductRequest): Promise<Product> {
+// Backend API response types
+interface BackendProductResponse {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  currency: string;
+  stockQuantity: number;
+  category: string;
+  imageUrl: string;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface BackendApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
+
+// Category mapping for images
+const categoryImageMapping: Record<string, string[]> = {
+  'Watches': [
+    '/images/products/watches/apple-watch-9-removebg-preview.png',
+    '/images/products/watches/apple-watch-9-3-removebg-preview.png',
+    '/images/products/watches/apple-watch-se-removebg-preview.png',
+    '/images/products/watches/apple-watch-se-2-removebg-preview.png',
+    '/images/products/watches/firebolt-ninja-removebg-preview.png',
+    '/images/products/watches/galaxy-watch-4-removebg-preview.png',
+    '/images/products/watches/galaxy-watch-4-2-removebg-preview.png',
+  ],
+  'Computers': [
+    '/images/products/computers/asus-vivobook-removebg-preview.png',
+    '/images/products/computers/asus-vivobook-2-removebg-preview.png',
+    '/images/products/computers/dell-gaming-removebg-preview.png',
+    '/images/products/computers/lenova-removebg-preview.png',
+    '/images/products/computers/lenova-2-removebg-preview.png',
+    '/images/products/computers/msi-modern-14-removebg-preview.png',
+    '/images/products/computers/msi-modern-14-2-removebg-preview.png',
+    '/images/products/computers/msi-modern-14-3-removebg-preview.png',
+    '/images/products/computers/readme-13-c-removebg-preview.png',
+    '/images/products/computers/readme-13c-2-removebg-preview.png',
+    '/images/products/computers/galaxy-15-removebg-preview.png',
+  ],
+  'Headphones': [
+    '/images/products/headphones/sony-dynamic-removebg-preview.png',
+    '/images/products/headphones/sony-dynamic-2-removebg-preview.png',
+    '/images/products/headphones/song-wh-removebg-preview.png',
+    '/images/products/headphones/senheiser-removebg-preview.png',
+    '/images/products/headphones/prothonics-removebg-preview.png',
+    '/images/products/headphones/peco-m6-removebg-preview.png',
+    '/images/products/headphones/peco-m6-2-removebg-preview.png',
+  ],
+  'Smartphones': [
+    '/images/products/phones/peco-m6-removebg-preview.png',
+    '/images/products/phones/peco-m6-2-removebg-preview.png',
+    '/images/products/phones/readme-13-c-removebg-preview.png',
+    '/images/products/phones/readme-13c-2-removebg-preview.png',
+    '/images/products/phones/lava_agni-removebg-preview.png',
+    '/images/products/phones/galaxy-15-removebg-preview.png',
+  ],
+  // Add more generic category mappings
+  'Electronics': [
+    '/images/products/computers/asus-vivobook-removebg-preview.png',
+    '/images/products/watches/apple-watch-9-removebg-preview.png',
+    '/images/products/headphones/sony-dynamic-removebg-preview.png',
+    '/images/products/phones/peco-m6-removebg-preview.png',
+  ],
+  'Technology': [
+    '/images/products/computers/dell-gaming-removebg-preview.png',
+    '/images/products/phones/galaxy-15-removebg-preview.png',
+    '/images/products/watches/galaxy-watch-4-removebg-preview.png',
+  ],
+  'Accessories': [
+    '/images/products/headphones/senheiser-removebg-preview.png',
+    '/images/products/watches/firebolt-ninja-removebg-preview.png',
+  ]
+};
+
+// Helper function to get random images for a category
+function getRandomImagesForCategory(category: string, count: number = 2): string[] {
+  const images = categoryImageMapping[category] || [];
+  if (images.length === 0) {
+    // Return default placeholder images if category not found
+    return [
+      '/images/products/default-product.png', 
+      '/images/products/default-product-2.png'
+    ].slice(0, count);
+  }
+  
+  const shuffled = [...images].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, Math.min(count, images.length));
+}
+
+// Helper function to generate dummy data for missing fields
+function generateDummyData(backendProduct: BackendProductResponse): Partial<Product> {
+  return {
+    aboutItem: [
+      "High-quality product with excellent features and performance.",
+      "Designed for optimal user experience and durability.",
+      "Comes with comprehensive warranty and support.",
+    ],
+    discount: Math.floor(Math.random() * 20) + 5, // Random discount 5-25%
+    rating: 4.0 + (Math.random() * 0.5), // Random rating 4.0-4.5
+    reviews: [
+      {
+        content: "Great product, highly recommended!",
+        rating: 4,
+        author: "Customer",
+        image: "/images/people/person.jpg",
+        date: new Date(),
+      },
+    ] as Review[],
+    brand: backendProduct.name.split(' ')[0] || "Brand",
+    color: ['black', 'white', 'gray'],
+  };
+}
+
+// Transform backend product to frontend format
+function transformBackendProduct(backendProduct: BackendProductResponse): Product {
+  const dummyData = generateDummyData(backendProduct);
+  const images = getRandomImagesForCategory(backendProduct.category);
+  
+  return {
+    id: parseInt(backendProduct.id, 10) || Math.floor(Math.random() * 10000),
+    name: backendProduct.name,
+    category: backendProduct.category,
+    description: backendProduct.description,
+    price: backendProduct.price,
+    stockItems: backendProduct.stockQuantity,
+    images,
+    ...dummyData,
+  } as Product;
+}
+
+export class ProductService {
+  // Get all products
+  async getAllProducts(): Promise<Product[]> {
     try {
-      const response = await apiClient.post<Product>('/products/createProduct', productData);
-      return response;
+      const response = await apiClient.get<BackendProductResponse[] | BackendApiResponse<BackendProductResponse[]>>('/products/getAllProducts');
+      
+      // Handle different response formats
+      let products: BackendProductResponse[];
+      if (Array.isArray(response)) {
+        products = response;
+      } else if ('data' in response && response.data && Array.isArray(response.data)) {
+        products = response.data;
+      } else {
+        console.warn('Unexpected API response format:', response);
+        products = [];
+      }
+      
+      return products.map(transformBackendProduct);
     } catch (error) {
-      console.error('Failed to create product:', error);
-      throw error;
+      console.error('Failed to fetch products:', error);
+      // Return empty array if API fails
+      return [];
     }
   }
 
   // Get product by ID
-  async getProductById(id: string): Promise<Product> {
+  async getProductById(id: string): Promise<Product | null> {
     try {
-      const response = await apiClient.get<Product>(`/products/${id}`, false);
-      return response;
+      const response = await apiClient.get<BackendProductResponse | BackendApiResponse<BackendProductResponse>>(`/products/${id}`);
+      
+      // Handle different response formats
+      let product: BackendProductResponse;
+      if ('data' in response && response.data && typeof response.data === 'object') {
+        product = response.data;
+      } else if ('id' in response && response.id) {
+        product = response as BackendProductResponse;
+      } else {
+        console.warn('Unexpected API response format:', response);
+        return null;
+      }
+      
+      return transformBackendProduct(product);
     } catch (error) {
-      console.error('Failed to fetch product:', error);
-      throw error;
+      console.error(`Failed to fetch product ${id}:`, error);
+      return null;
     }
   }
 
-  // Get all active products
-  async getAllProducts(): Promise<Product[]> {
+  // Search products
+  async searchProducts(params: { name?: string; category?: string }): Promise<Product[]> {
     try {
-      const response = await apiClient.get<Product[]>('/products/getAllProducts', false);
-      return response;
-    } catch (error) {
-      console.error('Failed to fetch products:', error);
-      throw error;
-    }
-  }
-
-  // Search products by name or category
-  async searchProducts(params: ProductSearchParams): Promise<ProductSearchResponse> {
-    try {
-      const queryParams = new URLSearchParams();
+      const searchParams = new URLSearchParams();
+      if (params.name) searchParams.append('name', params.name);
+      if (params.category) searchParams.append('category', params.category);
       
-      if (params.name) queryParams.append('name', params.name);
-      if (params.category) queryParams.append('category', params.category);
-      if (params.page) queryParams.append('page', params.page.toString());
-      if (params.limit) queryParams.append('limit', params.limit.toString());
-
-      const queryString = queryParams.toString();
-      const endpoint = `/products/search${queryString ? `?${queryString}` : ''}`;
+      const endpoint = `/products/search${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
+      const response = await apiClient.get<BackendProductResponse[] | BackendApiResponse<BackendProductResponse[]>>(endpoint);
       
-      const response = await apiClient.get<ProductSearchResponse>(endpoint, false);
-      return response;
+      // Handle different response formats
+      let products: BackendProductResponse[];
+      if (Array.isArray(response)) {
+        products = response;
+      } else if ('data' in response && response.data && Array.isArray(response.data)) {
+        products = response.data;
+      } else {
+        console.warn('Unexpected API response format:', response);
+        products = [];
+      }
+      
+      return products.map(transformBackendProduct);
     } catch (error) {
       console.error('Failed to search products:', error);
-      throw error;
-    }
-  }
-
-  // Update product price
-  async updateProductPrice(id: string, priceData: UpdateProductPriceRequest): Promise<Product> {
-    try {
-      const response = await apiClient.put<Product>(`/products/${id}/price`, priceData);
-      return response;
-    } catch (error) {
-      console.error('Failed to update product price:', error);
-      throw error;
-    }
-  }
-
-  // Update product stock
-  async updateProductStock(id: string, stockData: UpdateProductStockRequest): Promise<Product> {
-    try {
-      const response = await apiClient.put<Product>(`/products/${id}/stock`, stockData);
-      return response;
-    } catch (error) {
-      console.error('Failed to update product stock:', error);
-      throw error;
+      return [];
     }
   }
 
   // Get products by category
   async getProductsByCategory(category: string): Promise<Product[]> {
-    try {
-      const response = await this.searchProducts({ category });
-      return response.products;
-    } catch (error) {
-      console.error('Failed to fetch products by category:', error);
-      throw error;
-    }
-  }
-
-  // Get featured products (you can modify this based on your backend logic)
-  async getFeaturedProducts(): Promise<Product[]> {
-    try {
-      const response = await this.getAllProducts();
-      // For now, return first 8 products as featured
-      return response.slice(0, 8);
-    } catch (error) {
-      console.error('Failed to fetch featured products:', error);
-      throw error;
-    }
+    return this.searchProducts({ category });
   }
 }
 
 // Export singleton instance
 export const productService = new ProductService();
+export default productService;

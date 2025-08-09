@@ -1,10 +1,14 @@
 // User related types
+export type UserRole = 'ADMIN' | 'SELLER' | 'CUSTOMER';
+
 export interface User {
   id: string;
   email: string;
   name: string;
   phone: string;
   address?: string;
+  role: UserRole;
+  isActive: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -15,6 +19,7 @@ export interface RegisterUserRequest {
   phone: string;
   password: string;
   address?: string;
+  role?: UserRole;
 }
 
 export interface LoginUserRequest {
@@ -38,6 +43,8 @@ export interface UserProfile {
   email: string;
   phone: string;
   address?: string;
+  role: UserRole;
+  isActive: boolean;
   createdAt: string;
   updatedAt: string;
 }
