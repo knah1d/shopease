@@ -55,7 +55,7 @@ public class OrderController {
         return ResponseEntity.ok(ApiResponse.success("Orders retrieved successfully", response));
     }
     
-    @PutMapping("/{orderId}/status")
+    @PatchMapping("/{orderId}/status")
     public ResponseEntity<ApiResponse<String>> updateOrderStatus(
             @PathVariable String orderId,
             @Valid @RequestBody UpdateOrderStatusRequest request) {
