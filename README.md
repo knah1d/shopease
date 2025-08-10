@@ -43,20 +43,41 @@ A modern e-commerce application built with Spring Boot following Clean Architect
 
 ## 📚 API Endpoints
 
+### Users
+- `POST /api/users/register` - Register new user
+- `POST /api/users/login` - User login (returns JWT token)
+- `GET /api/users/profile/{userId}` - Get user profile
+
+### Products
+- `GET /api/products/getAllProducts` - List all products
+- `GET /api/products/{id}` - Get product details
+- `GET /api/products/search` - Search products (with query parameters)
+- `POST /api/products/createProduct` - Create new product
+- `PUT /api/products/{id}/price` - Update product price
+- `PUT /api/products/{id}/stock` - Update product stock
+
+### Categories
+- `GET /api/categories` - List all categories
+- `GET /api/categories/active` - List active categories only
+- `GET /api/categories/{id}` - Get category details
+- `POST /api/categories` - Create new category
+- `PUT /api/categories/{id}` - Update category
+- `PUT /api/categories/{id}/activate` - Activate/deactivate category
+- `DELETE /api/categories/{id}` - Delete category
+
 ### Orders
 - `POST /api/orders` - Create new order
 - `GET /api/orders/{id}` - Get order by ID
 - `GET /api/orders/user/{userId}` - Get user's orders
 - `PATCH /api/orders/{id}/status` - Update order status
 
-### Products
-- `GET /api/products/getAllProducts` - List all products
-- `GET /api/products/{id}` - Get product details
-- `POST /api/products/createProduct` - Create new product
-
 ### Payments
-- `POST /api/payments/initiate` - Initiate payment
-- Payment callback endpoints for SSLCommerz integration
+- `POST /api/orders/{order_id}/payment` - Make payment for an order
+- `POST /api/payments/initiate` - Initiate payment with SSLCommerz
+- `POST /api/payments/success` - Payment success callback
+- `POST /api/payments/fail` - Payment failure callback
+- `POST /api/payments/cancel` - Payment cancellation callback
+- `GET /api/payments/status/{transactionId}` - Get payment status
 
 ## ⚙️ Configuration
 
