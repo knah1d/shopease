@@ -7,6 +7,7 @@ import com.example.shopease.order.domain.valueobjects.OrderId;
 import com.example.shopease.order.domain.valueobjects.OrderStatus;
 import com.example.shopease.order.infrastructure.persistence.OrderEntity;
 import com.example.shopease.order.infrastructure.persistence.OrderItemEntity;
+import com.example.shopease.order.infrastructure.persistence.OrderJpaRepository;
 import com.example.shopease.order.infrastructure.persistence.OrderStatusEnum;
 import com.example.shopease.product.domain.valueobjects.ProductId;
 import com.example.shopease.shared.domain.valueobjects.Money;
@@ -14,10 +15,17 @@ import com.example.shopease.user.domain.valueobjects.UserId;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
 public class OrderMapper {
+    
+    private final OrderJpaRepository jpaRepository;
+    
+    public OrderMapper(OrderJpaRepository jpaRepository) {
+        this.jpaRepository = jpaRepository;
+    }
     
     public Order toDomain(OrderEntity entity) {
         if (entity == null) {
@@ -65,35 +73,61 @@ public class OrderMapper {
         if (domain == null) {
             return null;
         }
-        
+
         DeliveryAddress address = domain.getDeliveryAddress();
         Money deliveryCharge = domain.getDeliveryCharge();
+
+        // Check if this is an existing order by looking for it in the database
+        Optional<OrderEntity> existingEntity = jpaRepository.findById(domain.getOrderId().getValue());
         
-        OrderEntity entity = new OrderEntity(
-                domain.getOrderId().getValue(),
-                domain.getBuyerId().getValue(),
-                address.getStreet(),
-                address.getCity(),
-                address.getState(),
-                address.getZipCode(),
-                address.getCountry(),
-                domain.getPaymentMethod(),
-                deliveryCharge.getAmount(),
-                deliveryCharge.getCurrency(),
-                domain.getOrderDate(),
-                mapToOrderStatusEnum(domain.getStatus()),
-                domain.getCreatedAt(),
-                domain.getUpdatedAt()
-        );
-        
-        // Map order items
-        List<OrderItemEntity> orderItemEntities = domain.getOrderItems().stream()
-                .map(this::toOrderItemEntity)
-                .collect(Collectors.toList());
-        
-        entity.setOrderItems(orderItemEntities);
-        orderItemEntities.forEach(item -> item.setOrder(entity));
-        
+        OrderEntity entity;
+        if (existingEntity.isPresent()) {
+            // Update existing entity instead of creating new one
+            entity = existingEntity.get();
+            entity.setBuyerId(domain.getBuyerId().getValue());
+            entity.setDeliveryStreet(address.getStreet());
+            entity.setDeliveryCity(address.getCity());
+            entity.setDeliveryState(address.getState());
+            entity.setDeliveryZipCode(address.getZipCode());
+            entity.setDeliveryCountry(address.getCountry());
+            entity.setPaymentMethod(domain.getPaymentMethod());
+            entity.setDeliveryChargeAmount(deliveryCharge.getAmount());
+            entity.setDeliveryChargeCurrency(deliveryCharge.getCurrency());
+            entity.setOrderDate(domain.getOrderDate());
+            entity.setStatus(mapToOrderStatusEnum(domain.getStatus()));
+            entity.setUpdatedAt(domain.getUpdatedAt());
+            
+            // DO NOT touch order items for existing orders - they are managed separately
+            // This prevents duplication when only updating status or other fields
+            
+        } else {
+            // Create new entity for new orders
+            entity = new OrderEntity(
+                    domain.getOrderId().getValue(),
+                    domain.getBuyerId().getValue(),
+                    address.getStreet(),
+                    address.getCity(),
+                    address.getState(),
+                    address.getZipCode(),
+                    address.getCountry(),
+                    domain.getPaymentMethod(),
+                    deliveryCharge.getAmount(),
+                    deliveryCharge.getCurrency(),
+                    domain.getOrderDate(),
+                    mapToOrderStatusEnum(domain.getStatus()),
+                    domain.getCreatedAt(),
+                    domain.getUpdatedAt()
+            );
+
+            // Only set order items for NEW orders
+            List<OrderItemEntity> orderItemEntities = domain.getOrderItems().stream()
+                    .map(this::toOrderItemEntity)
+                    .collect(Collectors.toList());
+
+            entity.setOrderItems(orderItemEntities);
+            orderItemEntities.forEach(item -> item.setOrder(entity));
+        }
+
         return entity;
     }
     
