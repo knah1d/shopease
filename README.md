@@ -124,10 +124,4 @@ Each module follows Clean Architecture:
 4. Push to branch (`git push origin feature/new-feature`)
 5. Open Pull Request
 
-## 📄 License
 
-This project is licensed under the MIT License.
-
----
-
-**Built with ❤️ for academic purposes**
